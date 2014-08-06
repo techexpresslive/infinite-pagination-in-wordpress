@@ -1,0 +1,21 @@
+function rdc_filter_wp_link_pages_args( $r ) {
+    global $page, $numpages;
+     
+    // These links should match the design of your existing links
+    // and you should change 12345 to your slideshow category
+             
+    // If last page of a slideshow, show a "next" button where there wouldn't normally be one
+    if ( $r['next_or_number'] == 'next' && $page == $numpages && '' == $r['previouspagelink'] ) {
+        $repl_next_link = '<a href="' . rdc_get_prev_url_in_category( 12345 ) . '">NEXT &raquo;</a>';
+        echo $r['before'] . $repl_next_link . $r['after'];
+    }
+         
+    // If first page of a slideshow, showing "back" button where there wouldn't normally be one 
+    if ( $r['next_or_number'] == 'next' && $page == 1 && '' == $r['nextpagelink'] ) {
+        $repl_prev_link = '<a onclick="window.history.back();">&laquo; PREVIOUS</a>';
+        echo $r['before'] . $repl_prev_link . $r['after'];
+    }
+         
+    return $r;
+}
+add_filter( 'wp_link_pages_args', 'rdc_filter_wp_link_pages_args' );
